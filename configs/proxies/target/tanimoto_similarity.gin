@@ -1,4 +1,4 @@
 proxy/gin.singleton.constructor = @TanimotoSimilarityProxy
-TanimotoSimilarityProxy.similarity_is_1_penalty = 0.1
+TanimotoSimilarityProxy.clip_value = 0.9
 train_proxy = @proxy/gin.singleton()
 valid_proxy = %train_proxy

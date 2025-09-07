@@ -2,7 +2,7 @@ target_proxy = @proxy/gin.singleton()
 
 # Tanimoto Similarity Proxy
 tanimoto_similarity_proxy/gin.singleton.constructor = @TanimotoSimilarityProxy
-TanimotoSimilarityProxy.similarity_is_1_penalty = 0.1
+TanimotoSimilarityProxy.clip_value = 0.8
 tanimoto_similarity_proxy = @tanimoto_similarity_proxy/gin.singleton()
 
 # Composed Proxy
