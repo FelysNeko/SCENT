@@ -5,3 +5,4 @@ from .rnd_novelty_proxy import RNDNoveltyProxy
 from .seh_proxy import SehMoleculeProxy
 from .seno_proxy import SenoProxy
 from .tdc_proxy import TDCProxy
+from .tanimoto_similarity_proxy import TanimotoSimilarityProxy
