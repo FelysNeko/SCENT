@@ -1,0 +1,25 @@
+target_proxy = @proxy/gin.singleton()
+
+# Tanimoto Similarity Proxy
+tanimoto_similarity_proxy/gin.singleton.constructor = @TanimotoSimilarityProxy
+TanimotoSimilarityProxy.similarity_is_1_penalty = 0.1
+tanimoto_similarity_proxy = @tanimoto_similarity_proxy/gin.singleton()
+
+# Composed Proxy
+target_weight = 1.0
+tanimoto_similarity_weight = 1.0
+ComposedProxy.weight_dict = {
+    'target': %target_weight,
+    'tanimoto_similarity': %tanimoto_similarity_weight,
+}
+ComposedProxy.proxies_dict = {
+    'target': %target_proxy,
+    'tanimoto_similarity': %tanimoto_similarity_proxy
+}
+ComposedProxy.aggregation = 'prod'
+train_proxy/gin.singleton.constructor = @ComposedProxy
+train_proxy = @train_proxy/gin.singleton()
+
+# Use `target` as the proxy component name
+proxy_component_name = 'target'
+proxy_component_name_list = ['target', 'tanimoto_similarity']

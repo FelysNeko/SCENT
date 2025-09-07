@@ -14,11 +14,14 @@ from rgfn.shared.proxies.cached_proxy import CachedProxyBase
 
 @gin.configurable()
 class TanimotoSimilarityProxy(CachedProxyBase[ReactionState]):
-    def __init__(self, smiles: str):
+    def __init__(self, smiles: str, similarity_is_1_penalty: float):
         super().__init__()
         mol = Chem.MolFromSmiles(smiles)
         assert mol
-        self.ecfp6 = AllChem.GetMorganFingerprint(mol, 3)
+        assert 0.0 <= similarity_is_1_penalty <= 1.0
+        self.reference_smiles = smiles
+        self.similarity_is_1_penalty = similarity_is_1_penalty
+        self.reference_ecfp6 = AllChem.GetMorganFingerprint(mol, 3)
         self.cache = {ReactionStateEarlyTerminal(None): 0.0}
 
     @property
@@ -30,11 +33,13 @@ class TanimotoSimilarityProxy(CachedProxyBase[ReactionState]):
         return True
 
     def _compute_tanimoto_similarity(self, smiles: str) -> float:
+        if self.reference_smiles == smiles:
+            return 1.0 - self.similarity_is_1_penalty
         mol = Chem.MolFromSmiles(smiles)
         if not mol:
             return 0.0
         ecfp6 = AllChem.GetMorganFingerprint(mol, 3)
-        return Chem.DataStructs.TanimotoSimilarity(self.ecfp6, ecfp6)
+        return Chem.DataStructs.TanimotoSimilarity(self.reference_ecfp6, ecfp6)
 
     def _compute_proxy_output(self, states: List[TState]) -> List[float]:
         return [self._compute_tanimoto_similarity(s.molecule.smiles) for s in states]
