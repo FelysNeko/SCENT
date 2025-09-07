@@ -7,6 +7,6 @@ TanimotoSimilarityModes.proxy_term_threshold = 8.0
 TanimotoSimilarityModes.similarity_threshold = 0.5
 TanimotoSimilarityModes.max_modes = 5000
 NumScaffoldsFound.proxy_value_threshold_list = [0.6, 0.7, 0.8, 0.9]
-beta = 24
+beta = 48
 
 TanimotoSimilarityProxy.smiles = "O=C(NCc1cn(CC2CC2)c2ccccc12)c1ccc2oc(-c3cccc(C(=O)NC4CC4)c3)nc2c1"
