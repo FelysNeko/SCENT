@@ -153,7 +153,7 @@ class Trainer(Generic[TState, TActionSpace, TAction], TrainingHooksMixin):
 
         if resume_path is not None:
             resume_path = Path(resume_path)
-            checkpoint_dict = torch.load(resume_path, map_location=device)
+            checkpoint_dict = torch.load(resume_path, map_location=device, weights_only=False)
             self.objective.load_state_dict(checkpoint_dict["model"])
             self.optimizer.optimizer.load_state_dict(checkpoint_dict["optimizer"])
             for state in self.optimizer.optimizer.state.values():
